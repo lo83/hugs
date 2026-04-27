@@ -8,17 +8,19 @@ local OffButton = Instance.new("TextButton")
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
 
+-- Menu Button
 ToggleButton.Parent = ScreenGui
-ToggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 ToggleButton.Position = UDim2.new(0, 10, 0.4, 0)
 ToggleButton.Size = UDim2.new(0, 80, 0, 40)
 ToggleButton.Text = "Menu"
 
+-- Main Frame
 Frame.Parent = ScreenGui
 Frame.Visible = false
-Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Frame.Position = UDim2.new(0.4, 0, 0.3, 0)
-Frame.Size = UDim2.new(0, 180, 0, 150)
+Frame.Size = UDim2.new(0, 200, 0, 160)
 Frame.Active = true
 Frame.Draggable = true
 
@@ -28,13 +30,13 @@ end)
 
 TargetInput.Parent = Frame
 TargetInput.Size = UDim2.new(1, 0, 0.3, 0)
-TargetInput.PlaceholderText = "2 Pit..."
+TargetInput.PlaceholderText = "2 Pitên Navî..."
 
 OnButton.Parent = Frame
 OnButton.Position = UDim2.new(0, 0, 0.35, 0)
 OnButton.Size = UDim2.new(1, 0, 0.3, 0)
-OnButton.Text = "ON (Kiss Mode)"
-OnButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- ڕەنگێ سۆر
+OnButton.Text = "Kiss (Any Height)"
+OnButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 
 OffButton.Parent = Frame
 OffButton.Position = UDim2.new(0, 0, 0.7, 0)
@@ -49,6 +51,11 @@ OnButton.MouseButton1Click:Connect(function()
     if targetName == "" then return end
     active = true
     
+    -- لودسترینگ بۆ ئەنیمەیشنا تە
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/lo83/hugs/refs/heads/main/hug"))()
+    end)
+
     while active do
         task.wait(0.01)
         for _, v in pairs(game.Players:GetPlayers()) do
@@ -56,8 +63,8 @@ OnButton.MouseButton1Click:Connect(function()
                 local char = game.Players.LocalPlayer.Character
                 local tChar = v.Character
                 if char and tChar and tChar:FindFirstChild("HumanoidRootPart") then
-                    -- ئەڤە تە ڕێک دکەتە بەرامبەر وی (Kiss)
-                    -- لێرە مە Angles گوهۆڕی بۆ 180 پلە دا کو ڕوویێ تە ل وی بیت
+                    -- ئەڤە تە ڕێک دکەتە بەرامبەر وی، چ ل سەر بیت چ ل بن بیت
+                    -- بکارئینانا CFrame بێی دیارکرنا Y (بەرزی) دێ تە ڕێک کەتە ئاستێ وی
                     char.HumanoidRootPart.CFrame = tChar.HumanoidRootPart.CFrame * CFrame.new(0, 0, -1.1) * CFrame.Angles(0, math.rad(180), 0)
                 end
             end
