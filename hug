@@ -1,53 +1,73 @@
-local ScreenGui = Instance.new("ScreenGui")
-local ToggleButton = Instance.new("TextButton")
-local Frame = Instance.new("Frame")
-local TargetInput = Instance.new("TextBox")
-local OnButton = Instance.new("TextButton")
-local OffButton = Instance.new("TextButton")
+-- 1. Paqijkirina her tishtekê kevn bo nemana 2 menuyan
+for _, v in pairs(game.Players.LocalPlayer:WaitForChild("PlayerGui"):GetChildren()) do
+    if v.Name == "BadiniKissV3" or v.Name == "KissMenuGui" or v.Name == "FinalKissGui" then
+        v:Destroy()
+    end
+end
 
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "BadiniKissV3"
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
 
-ToggleButton.Parent = ScreenGui
-ToggleButton.Text = "Menu"
-ToggleButton.Size = UDim2.new(0, 80, 0, 40)
-ToggleButton.Position = UDim2.new(0, 10, 0.4, 0)
+-- 2. Toggle Button (Touch)
+local Toggle = Instance.new("TextButton", ScreenGui)
+Toggle.Name = "ToggleButton"
+Toggle.Text = "Menu"
+Toggle.Size = UDim2.new(0, 75, 0, 35)
+Toggle.Position = UDim2.new(0, 10, 0.45, 0)
+Toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Toggle.TextColor3 = Color3.new(1, 1, 1)
+local UICorner = Instance.new("UICorner", Toggle)
+UICorner.CornerRadius = UDim.new(0, 10)
 
-Frame.Parent = ScreenGui
+-- 3. Main Frame
+local Frame = Instance.new("Frame", ScreenGui)
 Frame.Visible = false
-Frame.Size = UDim2.new(0, 200, 0, 160)
-Frame.Position = UDim2.new(0.4, 0, 0.3, 0)
-Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.Size = UDim2.new(0, 190, 0, 150)
+Frame.Position = UDim2.new(0.4, 0, 0.4, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Frame.Active = true
 Frame.Draggable = true
+Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 12)
 
-ToggleButton.MouseButton1Click:Connect(function()
+Toggle.MouseButton1Click:Connect(function()
     Frame.Visible = not Frame.Visible
 end)
 
-TargetInput.Parent = Frame
-TargetInput.Size = UDim2.new(1, 0, 0.3, 0)
-TargetInput.PlaceholderText = "Navê Serî yan Binî..."
+-- 4. Input Box (Username yan Display Name)
+local Input = Instance.new("TextBox", Frame)
+Input.Size = UDim2.new(0.9, 0, 0.25, 0)
+Input.Position = UDim2.new(0.05, 0, 0.1, 0)
+Input.PlaceholderText = "2 Pitên Navî..."
+Input.Text = ""
+Input.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Input.TextColor3 = Color3.new(1, 1, 1)
 
-OnButton.Parent = Frame
-OnButton.Position = UDim2.new(0, 0, 0.35, 0)
-OnButton.Size = UDim2.new(1, 0, 0.3, 0)
-OnButton.Text = "KISS ON"
-OnButton.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
+-- 5. ON Button (Kiss)
+local OnBtn = Instance.new("TextButton", Frame)
+OnBtn.Size = UDim2.new(0.9, 0, 0.25, 0)
+OnBtn.Position = UDim2.new(0.05, 0, 0.4, 0)
+OnBtn.Text = "KISS ON"
+OnBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+OnBtn.TextColor3 = Color3.new(1, 1, 1)
 
-OffButton.Parent = Frame
-OffButton.Position = UDim2.new(0, 0, 0.7, 0)
-OffButton.Size = UDim2.new(1, 0, 0.3, 0)
-OffButton.Text = "STOP"
-OffButton.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+-- 6. STOP Button
+local OffBtn = Instance.new("TextButton", Frame)
+OffBtn.Size = UDim2.new(0.9, 0, 0.25, 0)
+OffBtn.Position = UDim2.new(0.05, 0, 0.7, 0)
+OffBtn.Text = "STOP"
+OffBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+OffBtn.TextColor3 = Color3.new(1, 1, 1)
 
 local active = false
 
-OnButton.MouseButton1Click:Connect(function()
-    local text = TargetInput.Text:lower()
-    if text == "" then return end
+OnBtn.MouseButton1Click:Connect(function()
+    local targetText = Input.Text:lower()
+    if #targetText < 1 then return end
     active = true
     
+    -- Loadstring Animation
     pcall(function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/lo83/hugs/refs/heads/main/hug"))()
     end)
@@ -56,11 +76,12 @@ OnButton.MouseButton1Click:Connect(function()
         task.wait(0.01)
         for _, v in pairs(game.Players:GetPlayers()) do
             if v ~= game.Players.LocalPlayer then
-                -- لێرە پشکنینێ بۆ هەردوو ناڤان دکەین (Display Name & Username)
-                if v.Name:lower():sub(1, #text) == text or v.DisplayName:lower():sub(1, #text) == text then
+                -- Lêgerîn li herdu navan (Serî û Binî)
+                if v.Name:lower():sub(1, #targetText) == targetText or v.DisplayName:lower():sub(1, #targetText) == targetText then
                     local char = game.Players.LocalPlayer.Character
                     local tChar = v.Character
                     if char and tChar and tChar:FindFirstChild("HumanoidRootPart") then
+                        -- Te dibête rasta pêش وی (Kiss Mode)
                         char.HumanoidRootPart.CFrame = tChar.HumanoidRootPart.CFrame * CFrame.new(0, 0, -1.1) * CFrame.Angles(0, math.rad(180), 0)
                     end
                 end
@@ -69,6 +90,6 @@ OnButton.MouseButton1Click:Connect(function()
     end
 end)
 
-OffButton.MouseButton1Click:Connect(function()
+OffBtn.MouseButton1Click:Connect(function()
     active = false
 end)
