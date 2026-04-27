@@ -8,19 +8,16 @@ local OffButton = Instance.new("TextButton")
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
 
--- Menu Button
 ToggleButton.Parent = ScreenGui
-ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-ToggleButton.Position = UDim2.new(0, 10, 0.4, 0)
-ToggleButton.Size = UDim2.new(0, 80, 0, 40)
 ToggleButton.Text = "Menu"
+ToggleButton.Size = UDim2.new(0, 80, 0, 40)
+ToggleButton.Position = UDim2.new(0, 10, 0.4, 0)
 
--- Main Frame
 Frame.Parent = ScreenGui
 Frame.Visible = false
-Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Frame.Position = UDim2.new(0.4, 0, 0.3, 0)
 Frame.Size = UDim2.new(0, 200, 0, 160)
+Frame.Position = UDim2.new(0.4, 0, 0.3, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Frame.Active = true
 Frame.Draggable = true
 
@@ -30,28 +27,27 @@ end)
 
 TargetInput.Parent = Frame
 TargetInput.Size = UDim2.new(1, 0, 0.3, 0)
-TargetInput.PlaceholderText = "2 Pitên Navî..."
+TargetInput.PlaceholderText = "Navê Serî yan Binî..."
 
 OnButton.Parent = Frame
 OnButton.Position = UDim2.new(0, 0, 0.35, 0)
 OnButton.Size = UDim2.new(1, 0, 0.3, 0)
-OnButton.Text = "Kiss (Any Height)"
-OnButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+OnButton.Text = "KISS ON"
+OnButton.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
 
 OffButton.Parent = Frame
 OffButton.Position = UDim2.new(0, 0, 0.7, 0)
 OffButton.Size = UDim2.new(1, 0, 0.3, 0)
 OffButton.Text = "STOP"
-OffButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+OffButton.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
 
 local active = false
 
 OnButton.MouseButton1Click:Connect(function()
-    local targetName = TargetInput.Text:lower()
-    if targetName == "" then return end
+    local text = TargetInput.Text:lower()
+    if text == "" then return end
     active = true
     
-    -- لودسترینگ بۆ ئەنیمەیشنا تە
     pcall(function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/lo83/hugs/refs/heads/main/hug"))()
     end)
@@ -59,13 +55,14 @@ OnButton.MouseButton1Click:Connect(function()
     while active do
         task.wait(0.01)
         for _, v in pairs(game.Players:GetPlayers()) do
-            if v ~= game.Players.LocalPlayer and v.Name:lower():sub(1, #targetName) == targetName then
-                local char = game.Players.LocalPlayer.Character
-                local tChar = v.Character
-                if char and tChar and tChar:FindFirstChild("HumanoidRootPart") then
-                    -- ئەڤە تە ڕێک دکەتە بەرامبەر وی، چ ل سەر بیت چ ل بن بیت
-                    -- بکارئینانا CFrame بێی دیارکرنا Y (بەرزی) دێ تە ڕێک کەتە ئاستێ وی
-                    char.HumanoidRootPart.CFrame = tChar.HumanoidRootPart.CFrame * CFrame.new(0, 0, -1.1) * CFrame.Angles(0, math.rad(180), 0)
+            if v ~= game.Players.LocalPlayer then
+                -- لێرە پشکنینێ بۆ هەردوو ناڤان دکەین (Display Name & Username)
+                if v.Name:lower():sub(1, #text) == text or v.DisplayName:lower():sub(1, #text) == text then
+                    local char = game.Players.LocalPlayer.Character
+                    local tChar = v.Character
+                    if char and tChar and tChar:FindFirstChild("HumanoidRootPart") then
+                        char.HumanoidRootPart.CFrame = tChar.HumanoidRootPart.CFrame * CFrame.new(0, 0, -1.1) * CFrame.Angles(0, math.rad(180), 0)
+                    end
                 end
             end
         end
